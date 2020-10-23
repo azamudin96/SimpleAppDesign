@@ -1,11 +1,14 @@
 package com.example.simpleuiapp.ui.dashboard;
 
 import android.animation.ArgbEvaluator;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +49,8 @@ public class DashboardFragment extends Fragment implements  DatePickerListener ,
     Integer[] colors = null;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
+    String str_device;
+
     CheckBox chk_food , chk_marie , chk_gym , chk_drink;
 
     TextView tv_food , tv_marie , tv_gym , tv_drink , tv_wish;
@@ -64,9 +69,14 @@ public class DashboardFragment extends Fragment implements  DatePickerListener ,
 
         adapter = new Adapter(models, getContext());
 
+        int dpValue = 180; // margin in dips
+        float d = getContext().getResources().getDisplayMetrics().density;
+        int margin = (int)(dpValue * d); // margin in pixels
+
         viewPager = root.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
-        viewPager.setPadding(20, 0, 400, 0);
+        viewPager.setPageMargin(-margin);
+        viewPager.setPadding(25, 0, 25, 0);
 
 //        Integer[] colors_temp = {
 //                getResources().getColor(R.color.pink),
@@ -206,14 +216,7 @@ public class DashboardFragment extends Fragment implements  DatePickerListener ,
         }
     }
 
-    private void multiLineStrikeThrough(TextView description, String textContent){
-        description.setText(textContent, TextView.BufferType.SPANNABLE);
-        Spannable spannable = (Spannable)description.getText();
-        spannable.setSpan(new StrikethroughSpan(), 0, textContent.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-    }
-
     private void strikeThroughText(TextView price){
         price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
-
 }
